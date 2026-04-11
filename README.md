@@ -1,31 +1,121 @@
-# Marketing Mix Revenue Optimiser
-E-commerce marketing teams must decide how to allocate limited ad budgets across multiple channels but lack tools showing instant revenue impact of reallocation decisions. This project delivers a Streamlit dashboard where users set total weekly budget ($10k-$100k) and drag sliders across 5 channels (Paid Search, Email, Display, Social, Affiliate) to see live revenue predictions and channel contribution breakdowns.
+Marketing Mix Revenue Optimiser
+Overview
 
-## Data Collection & Inspection
-Sourced from Kaggle Marketing Dataset containing 2M+ transaction events (events.csv) and 103k transactions (transactions.csv). Initial inspection showed messy timestamped events needing aggregation to weekly marketing spend by channel and corresponding total revenue. Dataset spans 157 weeks. Due to GitHub file size limits, the raw dataset is not included in this repository.
-The cleaned and preprocessed dataset used for analysis is provided.
-Raw data source: <https://www.kaggle.com/datasets/geethasagarbonthu/marketing-and-e-commerce-analytics-dataset>
+This project is an interactive marketing budget optimization system that estimates revenue impact based on channel-level spend allocation.
 
-## Data Cleaning & Preprocessing
-Transformed raw events into star schema warehouse with 4 tables totaling 334 rows: dim_channel.csv (5 channels), fact_marketing.csv (172 spend records), fact_revenue.csv (157 revenue weeks), mmm_data.csv (101 weeks × 6 columns). Used pivot_table to convert long-format spend into wide-format weekly matrix with columns, merged with revenue, normalized spend to 0-1 scale.[33][34][35][36][37]
+It enables users to:
 
-## Methodology
-Trained Ridge regression (alpha=1.0) on 101 weekly observations with time-based 80/20 train/test split. X contains 5 normalized spend columns, y is weekly revenue ($46k-$54k range). Results show R² train: 0.033, test: -0.004. Channel coefficients per $1 spend are Paid Search: $4479, Affiliate: $4416 (strongest), others negative or weak.
+Allocate a fixed marketing budget across channels
+Observe real-time revenue predictions
+Understand channel-wise contribution to revenue
 
-## GUI & Results Evaluation
-Streamlit dashboard provides budget allocation panel with total budget slider and 5 channel sliders that must sum exactly (green checkmark when balanced). Summary metrics show predicted revenue updating live. Channel breakdown table displays each channel's budget allocation and revenue contribution. Bar chart visualizes positive (green) vs negative (red) channel impact. 
+The system is designed to support data-driven budget allocation decisions, rather than relying on static reporting.
 
-## Constraints & Limitations
-R² 0.033 explains only 3% of revenue variance - 97% driven by unmodeled factors including seasonality, pricing changes, competitors, organic traffic, and adstock/lagged effects. Negative test R² confirms overfitting on small 101-week dataset. Model provides directional channel ranking only, not precise ROI forecasts.
+Technical Contribution
 
-## Input vs Processed Data Comparison
-Raw data contains 2M+ messy events. Star schema creates 334 structured rows across dimension and fact tables. Modeling matrix reduces to 101×6 weekly observations. Live predictions use 1×5 spend vector input.
+The core contribution is the development of a lightweight Marketing Mix Modeling (MMM) pipeline integrated with an interactive decision interface.
 
-## Validation of Improvements
-Budget sliders enforce mathematical constraint (sum equals total). Model displays R² prominently with directional warning. Test R² computation confirms overfitting. Live predictions respond correctly to slider changes. Negative coefficients correctly identified as channels to reduce spend.
+The system combines:
 
-## Organized Outputs & Reproducibility
-Production artifacts include model.pkl (trained Ridge model), data_processed folder (star schema CSVs), app.py (Streamlit dashboard), and notebook.ipynb (complete analysis). Run locally with pip install -r requirements.txt followed by streamlit run app.py. Processed CSVs enable instant reproduction without raw data download.
+Structured marketing spend data (multi-channel weekly aggregation)
+Statistical regression modeling (Ridge regression)
+Interactive simulation layer (Streamlit dashboard)
 
+This enables:
+
+Instant evaluation of allocation strategies
+Quantitative comparison of channel effectiveness
+Real-time decision support under budget constraints
+
+Key Features
+1. Marketing Mix Modeling Engine
+Ridge regression on weekly aggregated data
+Multi-channel input (Paid Search, Email, Display, Social, Affiliate)
+Outputs revenue as a function of spend allocation
+2. Interactive Budget Optimization Interface
+Adjustable total budget ($10k–$100k)
+Channel sliders with sum constraint enforcement
+Instant recalculation of predicted revenue
+3. Channel Contribution Analysis
+Per-channel revenue attribution
+Identification of high-impact vs low-impact channels
+Visualization of positive and negative contributions
+4. Data Engineering Pipeline
+Transformation of 2M+ raw events into structured datasets
+Star schema design:
+dim_channel
+fact_marketing
+fact_revenue
+Aggregation to weekly modeling dataset (101 observations)
+5. Reproducible Workflow
+Preprocessed datasets included
+Serialized model (model.pkl)
+End-to-end pipeline available via notebook and app
+Technology Stack
+Layer	Technology	Rationale
+Interface	Streamlit	Rapid development of interactive analytics UI
+Modeling	Python (scikit-learn)	Efficient regression modeling
+Data Processing	Pandas	Flexible data transformation and aggregation
+Storage	CSV (Star Schema)	Lightweight and reproducible data structure
+Visualization	Streamlit Charts	Real-time feedback for user decisions
+Model Characteristics
+Model: Ridge Regression (α = 1.0)
+Input: 5-channel normalized spend vector
+Output: Weekly revenue prediction
+
+Performance:
+
+R² (Train): 0.033
+R² (Test): -0.004
+Interpretation & Limitations
+
+The model is intentionally simple and highlights key challenges in MMM:
+
+Low R² indicates high influence of external factors, such as:
+Seasonality
+Pricing changes
+Competitive dynamics
+Organic traffic
+Lag/adstock effects
+Negative test R² suggests limited generalization due to dataset size
+
+Implication:
+The system is best used for directional insights and channel comparison, not precise forecasting.
+
+Novelty and Differentiation
+
+This project stands out in three ways:
+
+End-to-End MMM Pipeline
+Integrates data engineering, modeling, and deployment into a single workflow.
+Interactive Decision System
+Moves beyond static dashboards by enabling real-time budget experimentation.
+Constraint-Aware Optimization Interface
+Enforces realistic conditions (fixed budget allocation), reflecting practical marketing scenarios.
+Impact
+
+This system bridges the gap between data analysis and decision-making:
+
+Enables real-time evaluation of marketing strategies
+Simplifies complex MMM outputs into actionable insights
+Demonstrates how data pipelines translate into business tools
+Reproducibility
+
+To run locally:
+
+pip install -r requirements.txt
+streamlit run app.py
+
+Included artifacts:
+
+model.pkl – trained regression model
+data_processed/ – cleaned datasets
+notebook.ipynb – full analysis pipeline
+app.py – interactive dashboard
+Conclusion
+
+The Marketing Mix Revenue Optimiser is a practical implementation of marketing analytics principles, combining data engineering, statistical modeling, and interactive visualization.
+
+Its primary value lies in enabling intuitive, data-driven budget allocation decisions under real-world constraints.
 
 
