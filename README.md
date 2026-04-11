@@ -38,7 +38,8 @@ This enables:
 
 The workflow follows a structured data pipeline:
 
-> *(Insert architecture diagram here)*
+<img width="750" height="350" alt="image" src="https://github.com/user-attachments/assets/e4261221-d7f1-4ac6-aacb-54fdd858a7e5" />
+
 
 **Flow:**
 Raw Event Data → Data Cleaning & Aggregation → Star Schema → MMM Dataset → Ridge Model → Streamlit Dashboard → Live Predictions
@@ -185,9 +186,3 @@ The Marketing Mix Revenue Optimiser is a **practical implementation of marketing
 Its primary value lies in enabling **intuitive, data-driven budget allocation decisions under real-world constraints**.
 
 ---
-
-If you want, I can also:
-
-* Make this **more “data science resume optimized” (with stronger metric framing)**
-* Or compress it into a **1-minute recruiter skim version** (very useful for GitHub viewers)
-
